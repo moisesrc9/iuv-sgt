@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>SGT - Dashboard</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body { background-color: #f5f7fa; }
+.card {
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.navbar { background-color: #2c3e50; }
+.navbar-brand { color: white !important; }
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="container-fluid">
+        <span class="navbar-brand">SGT - Sistema de Transporte</span>
+    </div>
+</nav>
+
+<div class="container mt-4">
+
+    <!-- TARJETA  -->    
+   <div class="card p-3 mb-4 text-center">
+        <h5>Total Vehículos</h5>
+        <h2 id="totalVehiculos">0</h2>        
+    </div>
+
+    
+    
+    <!-- KPIs -->
+    <div class="row text-center">
+
+
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h5>Concesiones</h5>
+                <h2 id="concesiones">0</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h5>Conductores</h5>
+                <h2 id="conductores">0</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h5>Inspecciones</h5>
+                <h2 id="inspecciones">0</h2>
+            </div>
+        </div>
+
+    </div>
+    
+    
+
+    <!-- BUSCADOR -->
+    <input type="text" id="buscador" class="form-control mb-3" placeholder="Buscar vehículo...">
+
+    <!-- TABLA -->
+    <div class="card p-3 mb-4">
+        <table class="table table-striped table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th>Placa</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                </tr>
+            </thead>
+            <tbody id="tablaVehiculos"></tbody>
+        </table>
+    </div>
+
+    <!-- PAGINACIÓN -->
+    <div id="paginacion" class="mb-4"></div>
+
+    <!-- GRÁFICA -->
+    <div class="card p-3">
+        <canvas id="grafica"></canvas>
+    </div>
+
+</div>
+
+<script>
+let paginaActual = 1;
+let busquedaActual = "";
+const limite = 10;
+let chart = null;
+
+function cargarDatos(pagina = 1, busqueda = "") {
+    
+    fetch(`http://localhost:8000/api/vehiculos.php?page=${pagina}&search=${busqueda}`)
+    .then(res => res.json())
+    .then(res => {
+
+        let tabla = document.getElementById('tablaVehiculos');
+        tabla.innerHTML = '';
+
+        let marcas = {};
+
+        res.data.forEach(v => {
+            tabla.innerHTML += `
+                <tr>
+                    <td>${v.placa}</td>
+                    <td>${v.marca}</td>
+                    <td>${v.modelo}</td>
+                </tr>
+            `;
+
+            marcas[v.marca] = (marcas[v.marca] || 0) + 1;
+        });
+
+        // TOTAL
+        document.getElementById('totalVehiculos').innerText = res.total;
+
+        // PAGINACIÓN
+        let totalPaginas = Math.ceil(res.total / limite);
+        let paginacion = document.getElementById('paginacion');
+        paginacion.innerHTML = '';
+
+        for(let i = 1; i <= totalPaginas; i++){
+            paginacion.innerHTML += `
+                <button class="btn btn-sm ${i === pagina ? 'btn-primary' : 'btn-outline-primary'} m-1"
+                    onclick="cambiarPagina(${i})">
+                    ${i}
+                </button>
+            `;
+        }
+
+        // GRÁFICA
+        if (chart) chart.destroy();
+
+        chart = new Chart(document.getElementById('grafica'), {
+            type: 'bar',
+            data: {
+                labels: Object.keys(marcas),
+                datasets: [{
+                    label: 'Vehículos por marca',
+                    data: Object.values(marcas)
+                }]
+            }
+        });
+
+        paginaActual = pagina;
+    })
+    .catch(err => console.error("Error:", err));
+}
+
+function cambiarPagina(pagina) {
+    cargarDatos(pagina, busquedaActual);
+}
+
+
+function cargakpi()
+{
+fetch('http://localhost:8000/api/api_dashboard.php')
+.then(res => res.json())
+.then(data => {
+
+    // KPIs
+    document.getElementById('conductores').textContent = data.vehiculos;
+    document.getElementById('concesiones').textContent = data.concesiones;
+    document.getElementById('inspecciones').textContent = data.inspecciones;
+
+    // Gráfica
+    new Chart(document.getElementById('grafica'), {
+        type: 'bar',
+        data: {
+            labels: data.marcas,
+            datasets: [{
+                label: 'Cantidad',
+                data: data.totales
+            }]
+        }
+    });
+
+});
+
+}
+
+document.getElementById('buscador').addEventListener('keyup', function() {
+    busquedaActual = this.value;
+    cargarDatos(1, busquedaActual);
+});
+
+cargarDatos();
+cargakpi();
+</script>
+
+</body>
+</html>
+
