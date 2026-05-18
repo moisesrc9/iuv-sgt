@@ -1,0 +1,226 @@
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* BODY */
+body{
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    background-image: url('../assets/fondo_campeche.jpg');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    min-height:90vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    position:relative;
+
+    overflow:hidden;
+
+    overflow-y:auto;
+
+    padding:30px 0;
+        
+}
+
+/* CAPA OSCURA */
+.overlay{
+
+    position:absolute;
+
+    width:100%;
+    height:100%;
+
+    background: rgba(90,0,20,0.55);
+
+    top:0;
+    left:0;
+
+    z-index:1;
+}
+
+/* CONTENEDOR */
+.contenedor-login{
+
+    width:90%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    position:relative;
+
+    z-index:10;
+
+    padding:20px;
+}
+
+/* CARD LOGIN */
+.login-card{
+
+    background: rgba(255,255,255,0.96);
+
+    backdrop-filter: blur(10px);
+
+    border-radius:25px;
+
+    padding:50px;
+
+    width:80%;
+    max-width:550px;
+
+    box-shadow:0 15px 45px rgba(0,0,0,0.35);
+
+    border:none;
+}
+
+/* LOGO */
+.logo{
+
+    width:240px;
+    max-width:100%;
+
+    margin-bottom:15px;
+}
+
+/* TITULO */
+.titulo{
+
+    text-align:center;
+
+    font-size:1.8rem;
+
+    font-weight:300;
+
+    color:#222;
+
+    line-height:1.1;
+
+    margin-bottom:1px;
+}
+
+/* LINEA */
+.linea{
+
+    width:220px;
+    height:5px;
+
+    background:#7A0026;
+
+    margin:20px auto;
+
+    border-radius:10px;
+}
+
+/* SUBTITULO */
+.subtitulo{
+
+    text-align:center;
+
+    font-size:2.1rem;
+
+    color:#555;
+
+    margin-bottom:10px;
+
+    font-weight:300;
+}
+
+/* LABELS */
+.form-label{
+
+    font-weight:200;
+
+    color:#333;
+}
+
+/* INPUTS */
+.form-control{
+
+    height:40px;
+
+    border-radius:12px;
+
+    font-size:.9rem;
+}
+
+/* ICONOS */
+.input-group-text{
+
+    border-radius:12px 0 0 12px;
+
+    background:#f0f0f0;
+}
+
+/* BOTON */
+.btn-login{
+
+    background:#7A0026;
+
+    color:white;
+
+    border:none;
+
+    height:55px;
+
+    border-radius:12px;
+
+    font-size:1rem;
+
+    font-weight:bold;
+
+    transition:0.3s;
+}
+
+.btn-login:hover{
+
+    background:#990033;
+
+    transform:translateY(-2px);
+}
+
+/* FOOTER */
+.footer-login{
+
+    text-align:center;
+
+    margin-top:25px;
+
+    color:#444;
+
+    font-size:0.95rem;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+
+    .login-card{
+
+        padding:30px;
+    }
+
+    .titulo{
+
+        font-size:2rem;
+    }
+
+    .subtitulo{
+
+        font-size:1.5rem;
+    }
+
+    .logo{
+
+        width:150px;
+    }
+
+}
