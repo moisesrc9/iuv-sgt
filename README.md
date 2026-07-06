@@ -17,4 +17,4 @@ En la capa de presentación se implementa el patrón Modelo-Vista-Controlador (M
 <br>
 El desarrollo se basa en Programación Orientada a Objetos (POO) empleando la metodología Scrum.
 
-El sistema corre en ubuntu server 22.04 lts y Mysql 8.x
+El sistema corre en ubuntu server 24.04 lts y Mysql 8.x
