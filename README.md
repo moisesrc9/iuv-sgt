@@ -16,3 +16,5 @@ El Sistema de Gestión del Transporte (SGT) se desarrolla bajo una arquitectura 
 En la capa de presentación se implementa el patrón Modelo-Vista-Controlador (MVC), el cual permite organizar de manera estructurada la interacción entre la interfaz de usuario, la lógica del sistema y los datos.
 <br>
 El desarrollo se basa en Programación Orientada a Objetos (POO) empleando la metodología Scrum.
+
+El sistema corre en ubuntu server 22.04 lts y Mysql 8.x
